@@ -51,12 +51,11 @@ async function subPrice(event) {
 
 async function cartItemClickListener(event) {
   subPrice(event);
-
+  event.target.remove();
   const loadCart = JSON.parse(localStorage.getItem('cartItems'));
   const getID = event.target.innerHTML.substr(5, 13);
   const filterStorage = loadCart.filter((item) => item !== getID);
   localStorage.setItem('cartItems', JSON.stringify(filterStorage));
-  event.target.remove();
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -122,7 +121,5 @@ window.onload = async () => {
   selectFromList();
   getSavedCartItems();
 };
-
-
 
 /* [...cart.children].forEach((item) => console.log(item)) */
