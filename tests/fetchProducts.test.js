@@ -28,9 +28,4 @@ describe('1 - Teste a função fecthProducts', () => {
     expect(result).toEqual(new Error('You must provide an url'))
   })
 
-  it('Executa a função fetchProducts com o argumento "computador" e verifica se fetch foi chamada', async () => {
-    const result = await fetchProducts('computador',removeLoading)
-    expect(removeLoading).toHaveBeenCalled()
-  })
-
 });

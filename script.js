@@ -3,17 +3,13 @@ const cart = document.querySelector('.cart__items');
 const totalPrice = document.querySelector('.total-price');
 const emptyButton = document.querySelector('.empty-cart');
 const loadText = document.createElement('h1');
-let arr = [];
+
 let sumValues = 0;
 
 function showLoading() {
   loadText.innerHTML = 'CARREGANDO...';
   loadText.className = 'loading';
   items.appendChild(loadText);
-}
-
-function removeLoading() {
-  items.removeChild(loadText);
 }
 
 function createProductImageElement(imageSource) {
@@ -72,7 +68,7 @@ function createCartItemElement({ sku, name, salePrice }) {
 }
 
 const getResultArr = async () => {
-  const products = await fetchProducts('computer', removeLoading);
+  const products = await fetchProducts('computer');
   return products.results;
 };
 
@@ -84,6 +80,7 @@ const appendResult = async (result) => {
     );
     items.appendChild(results);
   });
+  loadText.remove();
 };
 
 const addToCart = async (info) => {
@@ -92,7 +89,7 @@ const addToCart = async (info) => {
     );
     cart.appendChild(cartItem);
 /*     console.log(cart); */
-    saveCartItems(cartItem, arr);
+    saveCartItems(cartItem.innerHTML);
     sumValues += info.price;
     const total = parseFloat(sumValues);
     totalPrice.innerText = total;
@@ -121,8 +118,11 @@ emptyButton.addEventListener('click', clearShoppingCart);
 
 window.onload = async () => {
   showLoading();
-  showLoading();
   await appendResult(getResultArr());
   selectFromList();
   getSavedCartItems();
 };
+
+
+
+/* [...cart.children].forEach((item) => console.log(item)) */

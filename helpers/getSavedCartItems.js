@@ -1,9 +1,6 @@
 const getSavedCartItems = () => {
   const loadCart = JSON.parse(localStorage.getItem('cartItems'));
-  loadCart.forEach(async (item) => {
-    const info = await fetchItem(item);
-    addToCart(info);
-  });
+  return loadCart;
 };
 
 if (typeof module !== 'undefined') {
