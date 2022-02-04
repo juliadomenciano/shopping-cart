@@ -71,6 +71,10 @@ const getResultArr = async () => {
   return products.results;
 };
 
+function savingCart(cartItem) {
+  saveCartItems(cartItem);
+}
+
 const appendResult = async (result) => {
   const res = await result;
   res.forEach((item) => {
@@ -88,7 +92,7 @@ const addToCart = async (info) => {
     );
     cart.appendChild(cartItem);
 /*     console.log(cart); */
-    saveCartItems(cartItem.innerHTML);
+    savingCart(cartItem.innerHTML);
     sumValues += info.price;
     const total = parseFloat(sumValues);
     totalPrice.innerText = total;
