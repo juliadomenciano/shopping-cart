@@ -3,7 +3,7 @@ const cart = document.querySelector('.cart__items');
 const totalPrice = document.querySelector('.total-price');
 const emptyButton = document.querySelector('.empty-cart');
 const loadText = document.createElement('h1');
-
+let arr = [];
 let sumValues = 0;
 
 function showLoading() {
@@ -87,12 +87,13 @@ const appendResult = async (result) => {
 };
 
 const addToCart = async (info) => {
+  const { id, title, price } = info;
   const cartItem = createCartItemElement(
-    { sku: info.id, name: info.title, salePrice: info.price },
+    { sku: id, name: title, salePrice: price },
     );
     cart.appendChild(cartItem);
-/*     console.log(cart); */
-    savingCart(cartItem.innerHTML);
+    arr.push({ sku: id, name: title, salePrice: price });
+    savingCart(JSON.stringify(arr));
     sumValues += info.price;
     const total = parseFloat(sumValues);
     totalPrice.innerText = total;
@@ -103,6 +104,8 @@ const clearShoppingCart = () => {
   
   localStorage.removeItem('cartItems');
   arr = [];
+  sumValues = 0;
+  totalPrice.innerText = sumValues;
 };
 
 const selectFromList = async () => {
@@ -117,13 +120,22 @@ const selectFromList = async () => {
   });
 };
 
+async function getFromLocalStorage() {
+  const data = await getSavedCartItems();
+  data.forEach((item) => {
+    cart.appendChild(createCartItemElement(item));
+    sumValues += item.salePrice;
+    console.log(item.salePrice);
+    const total = parseFloat(sumValues);
+    totalPrice.innerText = total;
+  });
+}
+
 emptyButton.addEventListener('click', clearShoppingCart);
 
 window.onload = async () => {
   showLoading();
   await appendResult(getResultArr());
   selectFromList();
-  getSavedCartItems();
+  getFromLocalStorage();
 };
-
-/* [...cart.children].forEach((item) => console.log(item)) */
